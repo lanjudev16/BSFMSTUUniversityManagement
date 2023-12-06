@@ -65,76 +65,71 @@ const studentLocalGuardianSchema = new Schema<localGuardian>({
     required: true,
   },
 });
-const studentSchema = new Schema<Student, TStudentModel>(
-  {
-    id: {
-      type: String,
-      required: true,
-      unique: true,
+const studentSchema = new Schema<Student, TStudentModel>({
+  id: {
+    type: String,
+    required: [true, 'ID is required'],
+    unique: true,
+  },
+  admissionSemester: {
+    type: Schema.Types.ObjectId,
+    ref: 'AcademicSemester',
+  },
+  user: {
+    type: Schema.Types.ObjectId,
+    required: true,
+    unique: true,
+    ref: 'user',
+  },
+  name: studentNameSchema,
+  gender: {
+    type: String,
+    enum: {
+      values: ['Male', 'Female'],
+      message: '{VALUE} is not supported',
     },
-    user: {
-      type: Schema.Types.ObjectId,
-      required: true,
-      unique: true,
-      ref: 'user',
-    },
-    name: studentNameSchema,
-    gender: {
-      type: String,
-      enum: {
-        values: ['Male', 'Female'],
-        message: '{VALUE} is not supported',
-      },
-      required: true,
-    },
-    dateOfBirth: {
-      type: String,
-    },
-    contactNumber: {
-      type: String,
-      required: true,
-    },
-    emergencyContactNumber: {
-      type: String,
-      required: true,
-    },
-    bloodGroup: {
-      type: String,
-      enum: ['A+', 'B+'],
-      required: true,
-    },
-    email: {
-      type: String,
-      required: true,
-      validate: {
-        validator: (value: string) => validator.isEmail(value),
-        message: '{VALUE} is not right email',
-      },
-    },
-    avatar: String,
-    permanentAddress: {
-      type: String,
-      required: true,
-    },
-    presentAddress: {
-      type: String,
-      required: true,
-    },
-    profileImage: String,
-    guardian: studentGuardianSchema,
-    localGuardian: {
-      type: studentLocalGuardianSchema,
-      required: [true, 'Local guardian is required'],
+    required: true,
+  },
+  dateOfBirth: {
+    type: String,
+  },
+  contactNumber: {
+    type: String,
+    required: true,
+  },
+  emergencyContactNumber: {
+    type: String,
+    required: true,
+  },
+  bloodGroup: {
+    type: String,
+    enum: ['A+', 'B+'],
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+    unique:true,
+    validate: {
+      validator: (value: string) => validator.isEmail(value),
+      message: '{VALUE} is not right email',
     },
   },
-  {
-    toJSON: {
-      virtuals: true,
-    },
+  avatar: String,
+  permanentAddress: {
+    type: String,
+    required: true,
   },
-);
-studentSchema.virtual('FullName').get(function () {
-  return `${this.name.firstName} ${this.name.middleName} ${this.name.lastName}`;
+  presentAddress: {
+    type: String,
+    required: true,
+  },
+  profileImage: String,
+  guardian: studentGuardianSchema,
+  localGuardian: {
+    type: studentLocalGuardianSchema,
+    required: [true, 'Local guardian is required'],
+  },
 });
 studentSchema.statics.isExits = async (id: string) => {
   const result = await StudentModel.findOne({ id });

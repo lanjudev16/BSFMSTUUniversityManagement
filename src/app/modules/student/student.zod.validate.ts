@@ -28,6 +28,7 @@ const studentZodSchema = z.object({
     password: z.string().max(20),
     student: z.object({
       name: nameSchema,
+      admissionSemester: z.string(),
       gender: z.enum(['Male', 'Female']),
       dateOfBirth: z.string(),
       contactNumber: z.string(),

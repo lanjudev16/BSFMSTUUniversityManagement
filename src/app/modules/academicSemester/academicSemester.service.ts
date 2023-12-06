@@ -18,8 +18,13 @@ const academicSemesterSingleGetFromDb = async (payLoad: string) => {
   return result;
 };
 //academic semester update
-const academicSemesterUpdateInToDb = async (payLoad: TAcademicSemester) => {
-  const result = await AcademicSemester.updateOne();
+const academicSemesterUpdateInToDb = async (
+  payLoad: TAcademicSemester,
+  id: string,
+) => {
+  const result = await AcademicSemester.findOneAndUpdate({ _id: id }, payLoad, {
+    new: true,
+  });
   return result;
 };
 export const academicSemesterService = {

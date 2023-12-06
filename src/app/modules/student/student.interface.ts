@@ -21,8 +21,10 @@ export type localGuardian = {
   contact: string;
 };
 export type Student = {
+  id: string;
   name: Name;
   gender: 'Male' | 'Female';
+  admissionSemester: Types.ObjectId;
   dateOfBirth?: string;
   contactNumber: string;
   emergencyContactNumber: string;
