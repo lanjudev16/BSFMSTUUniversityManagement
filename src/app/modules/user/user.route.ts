@@ -1,12 +1,14 @@
-import { UserControllers } from './user.controller';
-import studentZodSchema from '../student/student.zod.validate';
-import { validateRequest } from '../../middlewares/validateRequest';
 import express from 'express';
+import validateRequest from '../../middlewares/validateRequest';
+import { createStudentValidationSchema } from './../student/student.validation';
+import { UserControllers } from './user.controller';
+
 const router = express.Router();
 
 router.post(
   '/create-student',
-  validateRequest(studentZodSchema),
+  validateRequest(createStudentValidationSchema),
   UserControllers.createStudent,
 );
-export const UserRoute = router;
+
+export const UserRoutes = router;

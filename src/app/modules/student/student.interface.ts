@@ -1,48 +1,62 @@
-/* eslint-disable no-unused-vars */
 import { Model, Types } from 'mongoose';
 
-export type Guardian = {
+export type TUserName = {
+  firstName: string;
+  middleName: string;
+  lastName: string;
+};
+
+export type TGuardian = {
   fatherName: string;
   fatherOccupation: string;
-  fatherContactNumber: string;
-
+  fatherContactNo: string;
   motherName: string;
   motherOccupation: string;
-  motherContactNumber: string;
+  motherContactNo: string;
 };
-export type Name = {
-  firstName: string;
-  middleName?: string;
-  lastName?: string;
-};
-export type localGuardian = {
+
+export type TLocalGuardian = {
   name: string;
   occupation: string;
-  contact: string;
+  contactNo: string;
+  address: string;
 };
-export type Student = {
+
+export type TStudent = {
   id: string;
-  name: Name;
-  gender: 'Male' | 'Female';
-  admissionSemester: Types.ObjectId;
-  dateOfBirth?: string;
-  contactNumber: string;
-  emergencyContactNumber: string;
-  bloodGroup: 'A+' | 'B+';
+  user: Types.ObjectId;
+  password: string;
+  name: TUserName;
+  gender: 'male' | 'female' | 'other';
+  dateOfBirth?: Date;
   email: string;
-  avatar?: string;
+  contactNo: string;
+  emergencyContactNo: string;
+  bloogGroup?: 'A+' | 'A-' | 'B+' | 'B-' | 'AB+' | 'AB-' | 'O+' | 'O-';
   presentAddress: string;
   permanentAddress: string;
-  guardian: Guardian;
-  profileImage?: string;
-  localGuardian: localGuardian;
-  user: Types.ObjectId;
+  guardian: TGuardian;
+  localGuardian: TLocalGuardian;
+  profileImg?: string;
+  admissionSemester: Types.ObjectId;
+  isDeleted: boolean;
+  academicDepartment: Types.ObjectId;
 };
-export type TStudentMethod = {
-  isExits(id: string): Promise<Student | null>;
-};
-export type TStudentModel = Model<
-  Student,
-  Record<string, never>,
-  TStudentMethod
->;
+
+//for creating static
+
+export interface StudentModel extends Model<TStudent> {
+  isUserExists(id: string): Promise<TStudent | null>;
+}
+
+// for creating instance
+
+// export interface StudentMethods {
+//   isUserExists(id: string): Promise<TStudent | null>;
+// }
+
+// export type StudentModel = Model<
+//   TStudent,
+//   Record<string, never>,
+//   StudentMethods
+// >;

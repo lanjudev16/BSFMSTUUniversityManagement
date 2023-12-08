@@ -1,35 +1,52 @@
 import { academicSemesterNameCodeMapper } from './academicSemester.constant';
 import { TAcademicSemester } from './academicSemester.interface';
-import { AcademicSemester } from './academicSemesterModel';
-
-const academicSemesterInToDb = async (payLoad: TAcademicSemester) => {
-  if (academicSemesterNameCodeMapper[payLoad.name] != payLoad.code) {
-    throw new Error('Invalid semester');
+import { AcademicSemester } from './academicSemester.model';
+const createAcademicSemesterIntoDB = async (payload: TAcademicSemester) => {
+  
+  
+  
+  // semester name --> semester code
+  // academicSemesterNameCodeMapper['Fall']
+  if (academicSemesterNameCodeMapper[payload.name] !==  payload.code) {
+    throw new Error('Invalid Semester Code');
   }
-  const result = await AcademicSemester.create(payLoad);
+
+
+  const result = await AcademicSemester.create(payload);
   return result;
 };
-const academicSemesterGetFromDb = async () => {
+
+const getAllAcademicSemestersFromDB = async () => {
   const result = await AcademicSemester.find();
   return result;
 };
-const academicSemesterSingleGetFromDb = async (payLoad: string) => {
-  const result = await AcademicSemester.findOne({ _id: payLoad });
+
+const getSingleAcademicSemesterFromDB = async (id: string) => {
+  const result = await AcademicSemester.findById(id);
   return result;
 };
-//academic semester update
-const academicSemesterUpdateInToDb = async (
-  payLoad: TAcademicSemester,
+
+const updateAcademicSemesterIntoDB = async (
   id: string,
+  payload: Partial<TAcademicSemester>,
 ) => {
-  const result = await AcademicSemester.findOneAndUpdate({ _id: id }, payLoad, {
+  if (
+    payload.name &&
+    payload.code &&
+    academicSemesterNameCodeMapper[payload.name] !== payload.code
+  ) {
+    throw new Error('Invalid Semester Code');
+  }
+
+  const result = await AcademicSemester.findOneAndUpdate({ _id: id }, payload, {
     new: true,
   });
   return result;
 };
-export const academicSemesterService = {
-  academicSemesterInToDb,
-  academicSemesterGetFromDb,
-  academicSemesterSingleGetFromDb,
-  academicSemesterUpdateInToDb,
+
+export const AcademicSemesterServices = {
+  createAcademicSemesterIntoDB,
+  getAllAcademicSemestersFromDB,
+  getSingleAcademicSemesterFromDB,
+  updateAcademicSemesterIntoDB,
 };
