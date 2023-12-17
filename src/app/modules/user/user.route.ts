@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import express from 'express';
 import validateRequest from '../../middlewares/validateRequest';
 import { createStudentValidationSchema } from './../student/student.validation';
