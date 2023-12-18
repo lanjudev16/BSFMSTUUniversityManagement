@@ -4,9 +4,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import cors from 'cors';
 import express, { Application, Request, Response } from 'express';
+import globalErrorHandler from './app/middlewares/globalErrorhandler';
 import notFound from './app/middlewares/notFound';
 import router from './app/routes';
-import globalErrorHandler from './app/middlewares/globalErrorHandler';
 
 const app: Application = express();
 
@@ -16,11 +16,13 @@ app.use(cors());
 
 // application routes
 app.use('/api/v1', router);
-const text = async (req: Request, res: Response) => {
-  Promise.reject();
+
+const test = async (req: Request, res: Response) => {
+  const a = 10;
+  res.send(a);
 };
 
-app.use('/', text);
+app.get('/', test);
 
 app.use(globalErrorHandler);
 

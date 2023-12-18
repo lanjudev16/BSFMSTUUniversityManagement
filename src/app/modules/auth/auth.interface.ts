@@ -1,4 +1,4 @@
-export interface IUser {
+export interface ILoginUser {
   id: string;
   password: string;
 }
